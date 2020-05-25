@@ -12,6 +12,8 @@ class AddEvent {
   final _dateController = TextEditingController();
   final _imageController = TextEditingController();
 
+  final key = GlobalKey<FormState>();
+
   String _date;
 
   void addEventDialog(BuildContext context, EventBloc bloc, Event event) {
@@ -50,6 +52,7 @@ class AddEvent {
                     ),
                     height: _height * 0.45,
                     child: Form(
+                      key: key,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
@@ -66,14 +69,16 @@ class AddEvent {
                             ),
                             color: constant.violet,
                             onPressed: (){
-                              bloc.insertEvent(
-                                Event(
-                                  name: _nameController.text,
-                                  date: _date,
-                                  image: _imageController.text
-                                )
-                              ).whenComplete(() => 
-                                Navigator.pop(context));
+                              if(key.currentState.validate()) {
+                                bloc.insertEvent(
+                                  Event(
+                                    name: _nameController.text,
+                                    date: _date,
+                                    image: _imageController.text
+                                  )
+                                ).whenComplete(() => 
+                                  Navigator.pop(context));
+                              }
                             },
                             child: Container(
                               width: _width,
@@ -105,6 +110,10 @@ class AddEvent {
       decoration: constant.form.copyWith(labelText: 'Event Name'),
       controller: _nameController,
       cursorColor: constant.black,
+      validator: (value){
+        if(value.isEmpty) return '';
+        return null;
+      },
     );
   }
 
@@ -145,6 +154,10 @@ class AddEvent {
         _dateController.text = date == null ? '' : formatDate(date);
       },
       cursorColor: constant.black,
+      validator: (value){
+        if(value.isEmpty) return '';
+        return null;
+      },
     );
   }
 

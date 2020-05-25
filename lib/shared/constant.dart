@@ -11,6 +11,7 @@ InputDecoration form = InputDecoration(
     fontSize: 12.0,
     color: black
   ),
+  errorStyle: TextStyle(height: 0),
   focusedBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(24.0),
     borderSide: BorderSide(color: violet)
